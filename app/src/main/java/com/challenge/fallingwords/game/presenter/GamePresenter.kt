@@ -11,6 +11,8 @@ class GamePresenter @Inject
 constructor(private val getWords: GetWords): LifecyclePresenter<GamePresenter.View>(){
 
     private var words: Array<WordEngSpa>? = null
+    private var correctCount = 0
+    private var isCorrectTranslation = false
 
     fun initialize(view: View, words: Array<WordEngSpa>?){
         this.words = words
@@ -52,17 +54,18 @@ constructor(private val getWords: GetWords): LifecyclePresenter<GamePresenter.Vi
                                 stopReceivingUpdates()
                                 view?.showEndOfGame()
                             }
-                            .subscribe({ onNewWordsReady(it) }, {})
+                            .subscribe({ onNewWordsReady(it.first, it.second, it.third) }, {})
             )
         }
     }
 
-    private fun onNewWordsReady(words: Pair<String, String>){
+    private fun onNewWordsReady(words: Pair<String, String>, totalWordCount: Int, isCorrectTranslation: Boolean){
         view?.run {
             showNewWords(words)
-            showScore(0, 1)
+            showScore(correctCount, totalWordCount)
             showButtons()
         }
+        this.isCorrectTranslation = isCorrectTranslation
     }
 
     private fun stopReceivingUpdates(){
@@ -70,10 +73,12 @@ constructor(private val getWords: GetWords): LifecyclePresenter<GamePresenter.Vi
     }
 
     fun onYesClicked(){
+        if(isCorrectTranslation) correctCount++
         view?.hideButtons()
     }
 
     fun onNoClicked(){
+        if(!isCorrectTranslation) correctCount++
         view?.hideButtons()
     }
 

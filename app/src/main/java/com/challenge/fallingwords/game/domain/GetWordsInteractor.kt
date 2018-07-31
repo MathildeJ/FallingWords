@@ -15,16 +15,19 @@ constructor() : GetWords{
 
     private var wordCount = 0
 
-    override fun execute(words: Array<WordEngSpa>?): Observable<Pair<String, String>> {
-        return Observable.create<Pair<String, String>> { subscriber ->
+    override fun execute(words: Array<WordEngSpa>?): Observable<Triple<Pair<String, String>, Int, Boolean>> {
+        return Observable.create<Triple<Pair<String, String>, Int, Boolean>> { subscriber ->
             val disposable = Observable.interval(WORDS_UPDATE_INTERVAL, TimeUnit.MILLISECONDS)
                     .subscribe {
                         if(wordCount < NB_OF_WORDS_IN_GAME && words != null) {
-                            val firstWord = words.getRandomElement()
-                            val secondWord = words.getRandomElement()
-                            subscriber.onNext(Pair(firstWord.text_eng,
-                                    (if(Math.random() < 0.5) secondWord else firstWord).text_spa))
                             wordCount++
+                            val firstWord = words.getRandomElement()
+                            val isCorrectTranslationOfWord = Math.random() < 0.5
+                            subscriber.onNext(Triple(
+                                    Pair(firstWord.text_eng, (if(isCorrectTranslationOfWord) firstWord else words.getRandomElement()).text_spa),
+                                    wordCount,
+                                    isCorrectTranslationOfWord
+                            ))
                         } else {
                             subscriber.onComplete()
                         }
