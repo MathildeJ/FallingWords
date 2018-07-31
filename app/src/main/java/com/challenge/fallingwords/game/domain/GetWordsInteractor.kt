@@ -1,5 +1,6 @@
 package com.challenge.fallingwords.game.domain
 
+import com.challenge.fallingwords.game.domain.model.WordEngSpa
 import com.challenge.fallingwords.infrastructure.base.Constants.Companion.NB_OF_WORDS_IN_GAME
 import com.challenge.fallingwords.infrastructure.base.Constants.Companion.WORDS_UPDATE_INTERVAL
 import com.challenge.fallingwords.infrastructure.util.getRandomElement

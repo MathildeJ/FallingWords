@@ -1,14 +1,15 @@
 package com.challenge.fallingwords.game.presenter
 
 import com.challenge.fallingwords.game.domain.GetWords
-import com.challenge.fallingwords.game.domain.WordEngSpa
+import com.challenge.fallingwords.game.domain.model.WordEngSpa
+import com.challenge.fallingwords.infrastructure.base.BasePresenter
 import com.challenge.fallingwords.infrastructure.base.BaseView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class GamePresenter @Inject
-constructor(private val getWords: GetWords): LifecyclePresenter<GamePresenter.View>(){
+constructor(private val getWords: GetWords): BasePresenter<GamePresenter.View>(){
 
     private var words: Array<WordEngSpa>? = null
     private var correctCount = 0
@@ -18,6 +19,7 @@ constructor(private val getWords: GetWords): LifecyclePresenter<GamePresenter.Vi
         this.words = words
         initializeView(view)
         showInitialState()
+        subscribeToGetWords()
     }
 
     private fun showInitialState(){
@@ -28,22 +30,6 @@ constructor(private val getWords: GetWords): LifecyclePresenter<GamePresenter.Vi
         }
     }
 
-    override fun onStart() {
-        subscribeToGetWords()
-    }
-
-    override fun onPause() {
-        stopReceivingUpdates()
-    }
-
-    override fun onResume() {
-        subscribeToGetWords()
-    }
-
-    override fun onFinish() {
-        cleanUp()
-    }
-
     private fun subscribeToGetWords(){
         if(compositeDisposable.size() == 0) {
             compositeDisposable.add(
@@ -51,8 +37,8 @@ constructor(private val getWords: GetWords): LifecyclePresenter<GamePresenter.Vi
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .doOnComplete {
-                                stopReceivingUpdates()
                                 view?.showEndOfGame()
+                                cleanUp()
                             }
                             .subscribe({ onNewWordsReady(it.first, it.second, it.third) }, {})
             )
@@ -66,10 +52,6 @@ constructor(private val getWords: GetWords): LifecyclePresenter<GamePresenter.Vi
             showButtons()
         }
         this.isCorrectTranslation = isCorrectTranslation
-    }
-
-    private fun stopReceivingUpdates(){
-        compositeDisposable.clear()
     }
 
     fun onYesClicked(){

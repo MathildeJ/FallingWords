@@ -6,7 +6,7 @@ import android.view.View
 import android.view.animation.LinearInterpolator
 import com.beust.klaxon.Klaxon
 import com.challenge.fallingwords.R
-import com.challenge.fallingwords.game.domain.WordEngSpa
+import com.challenge.fallingwords.game.domain.model.WordEngSpa
 import com.challenge.fallingwords.game.presenter.GamePresenter
 import com.challenge.fallingwords.infrastructure.base.BaseFragment
 import com.challenge.fallingwords.infrastructure.base.Constants.Companion.NB_OF_WORDS_IN_GAME
@@ -52,7 +52,6 @@ class GameFragment: BaseFragment(), GamePresenter.View {
         }?.toTypedArray()
 
         presenter.initialize(this, words)
-        presenter.start()
     }
 
     private fun startAnimation(){
@@ -96,7 +95,6 @@ class GameFragment: BaseFragment(), GamePresenter.View {
 
     override fun showEndOfGame() {
         cleanUp()
-        presenter.finish()
         activity?.finish()
     }
 
