@@ -10,4 +10,5 @@ import dagger.Component
 interface FragmentComponent : ActivityComponent{
     fun inject(fragment: GameFragment)
 
+    
 }
