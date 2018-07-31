@@ -1,12 +1,16 @@
 package com.challenge.fallingwords.game.ui
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.View
+import android.view.animation.LinearInterpolator
 import com.beust.klaxon.Klaxon
 import com.challenge.fallingwords.R
 import com.challenge.fallingwords.game.domain.WordEngSpa
 import com.challenge.fallingwords.game.presenter.GamePresenter
 import com.challenge.fallingwords.infrastructure.base.BaseFragment
+import com.challenge.fallingwords.infrastructure.base.Constants.Companion.NB_OF_WORDS_IN_GAME
+import com.challenge.fallingwords.infrastructure.base.Constants.Companion.WORDS_UPDATE_INTERVAL
 import com.challenge.fallingwords.infrastructure.di.components.FragmentComponent
 import kotlinx.android.synthetic.main.fragment_game.*
 import javax.inject.Inject
@@ -30,18 +34,36 @@ class GameFragment: BaseFragment(), GamePresenter.View {
     }
 
     @Inject lateinit var presenter: GamePresenter
+    private var objectAnimator: ObjectAnimator? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setButtonsClickListener()
+        initializePresenter()
+        startAnimation()
+    }
+
+    private fun initializePresenter(){
         val json = context?.assets?.open("words_v2.json")
         val words = if(json != null) {
             Klaxon().parseArray<WordEngSpa>(json)
         } else {
             emptyList()
         }?.toTypedArray()
+
         presenter.initialize(this, words)
-        setButtonsClickListener()
         presenter.start()
+    }
+
+    private fun startAnimation(){
+        objectAnimator = ObjectAnimator.ofFloat(falling_text_view, "y", context!!.resources.displayMetrics.heightPixels.toFloat())
+
+        objectAnimator?.apply {
+            duration = WORDS_UPDATE_INTERVAL
+            repeatCount = NB_OF_WORDS_IN_GAME
+            interpolator = LinearInterpolator()
+            start()
+        }
     }
 
     private fun setButtonsClickListener(){
@@ -73,7 +95,13 @@ class GameFragment: BaseFragment(), GamePresenter.View {
     }
 
     override fun showEndOfGame() {
+        cleanUp()
         presenter.finish()
         activity?.finish()
+    }
+
+    private fun cleanUp(){
+        objectAnimator?.cancel()
+        objectAnimator = null
     }
 }
