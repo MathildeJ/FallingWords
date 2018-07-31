@@ -1,6 +1,7 @@
 package com.challenge.fallingwords.game.presenter
 
 import com.challenge.fallingwords.game.domain.GetWords
+import com.challenge.fallingwords.game.domain.WordEngSpa
 import com.challenge.fallingwords.infrastructure.base.BaseView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -9,7 +10,10 @@ import javax.inject.Inject
 class GamePresenter @Inject
 constructor(private val getWords: GetWords): LifecyclePresenter<GamePresenter.View>(){
 
-    fun initialize(view: View){
+    private var words: Array<WordEngSpa>? = null
+
+    fun initialize(view: View, words: Array<WordEngSpa>?){
+        this.words = words
         initializeView(view)
         showInitialState()
     }
@@ -41,7 +45,7 @@ constructor(private val getWords: GetWords): LifecyclePresenter<GamePresenter.Vi
     private fun subscribeToGetWords(){
         if(compositeDisposable.size() == 0) {
             compositeDisposable.add(
-                    getWords()
+                    getWords(words)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .doOnComplete {

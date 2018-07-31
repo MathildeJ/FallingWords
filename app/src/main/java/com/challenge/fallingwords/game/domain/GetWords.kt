@@ -3,7 +3,7 @@ package com.challenge.fallingwords.game.domain
 import io.reactivex.Observable
 
 interface GetWords{
-    fun execute(): Observable<Pair<String, String>>
+    fun execute(words: Array<WordEngSpa>?): Observable<Pair<String, String>>
 
-    operator fun invoke() = this.execute()
+    operator fun invoke(words: Array<WordEngSpa>?) = this.execute(words)
 }

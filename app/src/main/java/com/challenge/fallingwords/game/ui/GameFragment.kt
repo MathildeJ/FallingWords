@@ -2,12 +2,15 @@ package com.challenge.fallingwords.game.ui
 
 import android.os.Bundle
 import android.view.View
+import com.beust.klaxon.Klaxon
 import com.challenge.fallingwords.R
+import com.challenge.fallingwords.game.domain.WordEngSpa
 import com.challenge.fallingwords.game.presenter.GamePresenter
 import com.challenge.fallingwords.infrastructure.base.BaseFragment
 import com.challenge.fallingwords.infrastructure.di.components.FragmentComponent
 import kotlinx.android.synthetic.main.fragment_game.*
 import javax.inject.Inject
+
 
 class GameFragment: BaseFragment(), GamePresenter.View {
 
@@ -30,7 +33,13 @@ class GameFragment: BaseFragment(), GamePresenter.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter.initialize(this)
+        val json = context?.assets?.open("words_v2.json")
+        val words = if(json != null) {
+            Klaxon().parseArray<WordEngSpa>(json)
+        } else {
+            emptyList()
+        }?.toTypedArray()
+        presenter.initialize(this, words)
         setButtonsClickListener()
         presenter.start()
     }
