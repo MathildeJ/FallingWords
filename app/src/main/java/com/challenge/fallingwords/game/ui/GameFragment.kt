@@ -9,8 +9,7 @@ import com.challenge.fallingwords.R
 import com.challenge.fallingwords.game.domain.model.WordEngSpa
 import com.challenge.fallingwords.game.presenter.GamePresenter
 import com.challenge.fallingwords.infrastructure.base.BaseFragment
-import com.challenge.fallingwords.infrastructure.base.Constants.Companion.NB_OF_WORDS_IN_GAME
-import com.challenge.fallingwords.infrastructure.base.Constants.Companion.WORDS_UPDATE_INTERVAL
+import com.challenge.fallingwords.infrastructure.base.Constants
 import com.challenge.fallingwords.infrastructure.di.components.FragmentComponent
 import kotlinx.android.synthetic.main.fragment_game.*
 import javax.inject.Inject
@@ -58,8 +57,8 @@ class GameFragment: BaseFragment(), GamePresenter.View {
         objectAnimator = ObjectAnimator.ofFloat(falling_text_view, "y", context!!.resources.displayMetrics.heightPixels.toFloat())
 
         objectAnimator?.apply {
-            duration = WORDS_UPDATE_INTERVAL
-            repeatCount = NB_OF_WORDS_IN_GAME
+            duration = Constants.WORDS_UPDATE_INTERVAL
+            repeatCount = Constants.NB_OF_WORDS_IN_GAME
             interpolator = LinearInterpolator()
             start()
         }
