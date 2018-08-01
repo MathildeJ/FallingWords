@@ -6,12 +6,13 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
+//need 'open' modifier for instrumentation test
 @Module
-class MainModule(private val app: FallingWordsApplication) {
+open class MainModule(private val app: FallingWordsApplication) {
 
     @Provides
     @Singleton
-    fun provideApplicationContext(): Context {
+    open fun provideApplicationContext(): Context {
         return app
     }
 }

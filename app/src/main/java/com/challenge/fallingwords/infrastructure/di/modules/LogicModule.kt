@@ -5,11 +5,12 @@ import com.challenge.fallingwords.game.domain.GetWordsInteractor
 import dagger.Module
 import dagger.Provides
 
+//need 'open' modifier for instrumentation test
 @Module
-class LogicModule{
+open class LogicModule{
 
     @Provides
-    fun provideGetWords(interactor: GetWordsInteractor): GetWords {
+    open fun provideGetWords(interactor: GetWordsInteractor): GetWords {
         return interactor
     }
 }
