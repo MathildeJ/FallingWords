@@ -2,6 +2,7 @@ package com.challenge.fallingwords.infrastructure.di.components
 
 import com.challenge.fallingwords.FallingWordsApplication
 import com.challenge.fallingwords.game.presenter.GamePresenter
+import com.challenge.fallingwords.home.presenter.HomePresenter
 import com.challenge.fallingwords.infrastructure.base.BaseActivity
 
 interface MainComponent{
@@ -9,4 +10,5 @@ interface MainComponent{
     fun inject(activity: BaseActivity)
 
     fun getGamePresenter(): GamePresenter
+    fun getHomePresenter(): HomePresenter
 }
