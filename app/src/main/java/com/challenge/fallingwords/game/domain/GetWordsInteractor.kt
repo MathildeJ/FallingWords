@@ -18,7 +18,6 @@ constructor() : GetWords{
             val disposable = Observable.interval(0, WORDS_UPDATE_INTERVAL, TimeUnit.MILLISECONDS)
                     .subscribe {
                         if(wordCount < NB_OF_WORDS_IN_GAME && words != null) {
-                            wordCount++
                             val firstWord = words.getRandomElement()
                             val isCorrectTranslationOfWord = Math.random() < 0.5
                             subscriber.onNext(Triple(
@@ -26,6 +25,7 @@ constructor() : GetWords{
                                     wordCount,
                                     isCorrectTranslationOfWord
                             ))
+                            wordCount++
                         } else {
                             subscriber.onComplete()
                         }

@@ -48,7 +48,7 @@ constructor(private val getWords: GetWords): BasePresenter<GamePresenter.View>()
     private fun onNewWordsReady(words: Pair<String, String>, totalWordCount: Int, isCorrectTranslation: Boolean){
         view?.run {
             showNewWords(words)
-            showScore(correctCount, totalWordCount)
+            if(totalWordCount > 0) showScore(correctCount, totalWordCount)
             showButtons()
         }
         this.isCorrectTranslation = isCorrectTranslation
