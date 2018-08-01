@@ -54,9 +54,9 @@ class GetWordsInteractorTest{
         val expectedCount = 3
 
         observable.assertValueCount(expectedCount)
-        assertTrue(observable.values()[0].second == 1)
-        assertTrue(observable.values()[1].second == 2)
-        assertTrue(observable.values()[2].second == 3)
+        assertTrue(observable.values()[0].second == 0)
+        assertTrue(observable.values()[1].second == 1)
+        assertTrue(observable.values()[2].second == 2)
     }
 
     @Test

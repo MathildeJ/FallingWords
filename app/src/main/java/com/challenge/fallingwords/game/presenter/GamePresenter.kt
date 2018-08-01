@@ -4,6 +4,8 @@ import com.challenge.fallingwords.game.domain.GetWords
 import com.challenge.fallingwords.game.domain.model.WordEngSpa
 import com.challenge.fallingwords.infrastructure.base.BasePresenter
 import com.challenge.fallingwords.infrastructure.base.BaseView
+import com.challenge.fallingwords.infrastructure.base.Constants
+import com.challenge.fallingwords.infrastructure.base.Constants.Companion.NB_OF_WORDS_IN_GAME
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -37,6 +39,7 @@ constructor(private val getWords: GetWords): BasePresenter<GamePresenter.View>()
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .doOnComplete {
+                                view?.showScore(correctCount, Constants.NB_OF_WORDS_IN_GAME)
                                 view?.showEndOfGame()
                                 cleanUp()
                             }
