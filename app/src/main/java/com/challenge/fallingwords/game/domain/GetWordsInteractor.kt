@@ -21,9 +21,10 @@ constructor(private val wordsRepository: WordsRepository) : GetWords{
                     .subscribe {
                         if(wordCount < Constants.NB_OF_WORDS_IN_GAME && words != null) {
                             val firstWord = words.getRandomElement()
-                            val isCorrectTranslationOfWord = Math.random() < 0.5
+                            val secondWord = words.getRandomElement()
+                            val isCorrectTranslationOfWord = Math.random() < 0.5 || firstWord == secondWord
                             subscriber.onNext(Triple(
-                                    Pair(firstWord.text_eng, (if(isCorrectTranslationOfWord) firstWord else words.getRandomElement()).text_spa),
+                                    Pair(firstWord.text_eng, (if(isCorrectTranslationOfWord) firstWord else secondWord).text_spa),
                                     wordCount,
                                     isCorrectTranslationOfWord
                             ))
