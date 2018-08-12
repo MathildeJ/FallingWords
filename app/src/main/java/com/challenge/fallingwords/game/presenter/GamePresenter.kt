@@ -41,14 +41,14 @@ constructor(private val getWords: GetWords): BasePresenter<GamePresenter.View>()
                                 view?.showEndOfGame()
                                 cleanUp()
                             }
-                            .subscribe({ onNewWordsReady(it.first, it.second, it.third) }, {})
+                            .subscribe({ onNewWordsReady(it.words, it.wordCount, it.isCorrectTranslationOfWord) }, {})
             )
         }
     }
 
-    private fun onNewWordsReady(words: Pair<String, String>, totalWordCount: Int, isCorrectTranslation: Boolean){
+    private fun onNewWordsReady(words: WordEngSpa, totalWordCount: Int, isCorrectTranslation: Boolean){
         view?.run {
-            showNewWords(words)
+            showNewWords(Pair(words.textEng, words.textSpa))
             if(totalWordCount > 0) showScore(correctCount, totalWordCount)
             showButtons()
         }
