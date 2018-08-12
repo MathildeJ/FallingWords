@@ -56,12 +56,15 @@ constructor(private val getWords: GetWords): BasePresenter<GamePresenter.View>()
     }
 
     fun onYesClicked(){
-        if(isCorrectTranslation) correctCount++
-        view?.hideButtons()
+        onButtonClicked(isCorrectTranslation)
     }
 
     fun onNoClicked(){
-        if(!isCorrectTranslation) correctCount++
+        onButtonClicked(!isCorrectTranslation)
+    }
+
+    fun onButtonClicked(condition: Boolean){
+        if(condition) correctCount++
         view?.hideButtons()
     }
 
