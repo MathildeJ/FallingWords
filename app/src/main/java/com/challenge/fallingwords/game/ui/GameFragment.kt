@@ -43,14 +43,7 @@ class GameFragment: BaseFragment(), GamePresenter.View {
     }
 
     private fun initializePresenter(){
-        val json = context?.assets?.open("words_v2.json")
-        val words = if(json != null) {
-            Klaxon().parseArray<WordEngSpa>(json)
-        } else {
-            emptyList()
-        }?.toTypedArray()
-
-        presenter.initialize(this, words)
+        presenter.initialize(this)
     }
 
     private fun startAnimation(){

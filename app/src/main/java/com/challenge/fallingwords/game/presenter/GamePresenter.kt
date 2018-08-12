@@ -13,12 +13,10 @@ import javax.inject.Inject
 class GamePresenter @Inject
 constructor(private val getWords: GetWords): BasePresenter<GamePresenter.View>(){
 
-    private var words: Array<WordEngSpa>? = null
     private var correctCount = 0
     private var isCorrectTranslation = false
 
-    fun initialize(view: View, words: Array<WordEngSpa>?){
-        this.words = words
+    fun initialize(view: View){
         initializeView(view)
         showInitialState()
         subscribeToGetWords()
@@ -35,7 +33,7 @@ constructor(private val getWords: GetWords): BasePresenter<GamePresenter.View>()
     private fun subscribeToGetWords(){
         if(compositeDisposable.size() == 0) {
             compositeDisposable.add(
-                    getWords(words)
+                    getWords()
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .doOnComplete {

@@ -1,5 +1,6 @@
 package com.challenge.fallingwords.game.domain
 
+import com.challenge.fallingwords.game.data.WordsRepository
 import com.challenge.fallingwords.game.domain.model.WordEngSpa
 import com.challenge.fallingwords.infrastructure.base.Constants
 import com.challenge.fallingwords.infrastructure.util.getRandomElement
@@ -8,11 +9,13 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class GetWordsInteractor @Inject
-constructor() : GetWords{
+constructor(private val wordsRepository: WordsRepository) : GetWords{
 
     private var wordCount = 0
 
-    override fun execute(words: Array<WordEngSpa>?): Observable<Triple<Pair<String, String>, Int, Boolean>> {
+
+    override fun execute(): Observable<Triple<Pair<String, String>, Int, Boolean>> {
+        val words = wordsRepository.getWords()
         return Observable.create<Triple<Pair<String, String>, Int, Boolean>> { subscriber ->
             val disposable = Observable.interval(0, Constants.WORDS_UPDATE_INTERVAL, TimeUnit.MILLISECONDS)
                     .subscribe {

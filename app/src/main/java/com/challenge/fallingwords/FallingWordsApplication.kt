@@ -6,6 +6,7 @@ import com.challenge.fallingwords.infrastructure.di.modules.LogicModule
 import com.challenge.fallingwords.infrastructure.di.modules.MainModule
 import com.challenge.fallingwords.infrastructure.di.modules.PresenterModule
 import com.challenge.fallingwords.infrastructure.di.components.DaggerAppComponent
+import com.challenge.fallingwords.infrastructure.di.modules.DataModule
 
 
 class FallingWordsApplication: Application(){
@@ -21,6 +22,7 @@ class FallingWordsApplication: Application(){
         component = DaggerAppComponent.builder()
                 .mainModule(MainModule(this))
                 .logicModule(LogicModule())
+                .dataModule(DataModule())
                 .presenterModule(PresenterModule())
                 .build()
 
