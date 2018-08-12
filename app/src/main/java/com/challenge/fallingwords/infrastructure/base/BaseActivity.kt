@@ -20,7 +20,6 @@ abstract class BaseActivity: AppCompatActivity(), HasComponent<FragmentComponent
         initializeInjector()
         injectDependencies()
         setContentView(getLayoutResource())
-        injectViews()
     }
 
     protected abstract fun getLayoutResource(): Int
@@ -31,10 +30,6 @@ abstract class BaseActivity: AppCompatActivity(), HasComponent<FragmentComponent
 
     protected fun getApplicationComponent(): AppComponent {
         return (application as FallingWordsApplication).getAppComponent()
-    }
-
-    private fun injectViews() {
-        //ButterKnife.bind(this)
     }
 
     protected fun getActivityModule(): ActivityModule {
