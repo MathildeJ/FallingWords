@@ -1,6 +1,7 @@
 package com.challenge.fallingwords.infrastructure.di.components
 
 import com.challenge.fallingwords.game.ui.GameFragment
+import com.challenge.fallingwords.home.ui.HomeFragment
 import com.challenge.fallingwords.infrastructure.di.annotations.PerActivity
 import com.challenge.fallingwords.infrastructure.di.modules.ActivityModule
 import dagger.Component
@@ -9,6 +10,5 @@ import dagger.Component
 @Component(dependencies = [(AppComponent::class)], modules = [(ActivityModule::class)])
 interface FragmentComponent : ActivityComponent{
     fun inject(fragment: GameFragment)
-
-    
+    fun inject(fragment: HomeFragment)
 }

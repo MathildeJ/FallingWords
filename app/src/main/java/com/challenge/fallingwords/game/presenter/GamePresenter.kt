@@ -13,12 +13,10 @@ import javax.inject.Inject
 class GamePresenter @Inject
 constructor(private val getWords: GetWords): BasePresenter<GamePresenter.View>(){
 
-    private var words: Array<WordEngSpa>? = null
     private var correctCount = 0
     private var isCorrectTranslation = false
 
-    fun initialize(view: View, words: Array<WordEngSpa>?){
-        this.words = words
+    fun initialize(view: View){
         initializeView(view)
         showInitialState()
         subscribeToGetWords()
@@ -35,7 +33,7 @@ constructor(private val getWords: GetWords): BasePresenter<GamePresenter.View>()
     private fun subscribeToGetWords(){
         if(compositeDisposable.size() == 0) {
             compositeDisposable.add(
-                    getWords(words)
+                    getWords()
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .doOnComplete {
@@ -43,14 +41,14 @@ constructor(private val getWords: GetWords): BasePresenter<GamePresenter.View>()
                                 view?.showEndOfGame()
                                 cleanUp()
                             }
-                            .subscribe({ onNewWordsReady(it.first, it.second, it.third) }, {})
+                            .subscribe({ onNewWordsReady(it.words, it.wordCount, it.isCorrectTranslationOfWord) }, {})
             )
         }
     }
 
-    private fun onNewWordsReady(words: Pair<String, String>, totalWordCount: Int, isCorrectTranslation: Boolean){
+    private fun onNewWordsReady(words: WordEngSpa, totalWordCount: Int, isCorrectTranslation: Boolean){
         view?.run {
-            showNewWords(words)
+            showNewWords(Pair(words.textEng, words.textSpa))
             if(totalWordCount > 0) showScore(correctCount, totalWordCount)
             showButtons()
         }
@@ -58,12 +56,15 @@ constructor(private val getWords: GetWords): BasePresenter<GamePresenter.View>()
     }
 
     fun onYesClicked(){
-        if(isCorrectTranslation) correctCount++
-        view?.hideButtons()
+        onButtonClicked(isCorrectTranslation)
     }
 
     fun onNoClicked(){
-        if(!isCorrectTranslation) correctCount++
+        onButtonClicked(!isCorrectTranslation)
+    }
+
+    fun onButtonClicked(condition: Boolean){
+        if(condition) correctCount++
         view?.hideButtons()
     }
 

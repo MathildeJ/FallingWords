@@ -4,4 +4,9 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="score_over">%1$d/%2$d</string>
+
+    <string name="instructions">Do the following words have the same meaning?</string>
+    <string name="falling">Falling</string>
+    <string name="words">Words</string>
+    <string name="start">Start</string>
 </resources>
